@@ -8,43 +8,42 @@
 </head>
 <body>
     <header>        
-        <img src="./img/logo.png" alt="logo">
-        <nav>
-            <ul>
-                <li><a href="#">Categoria 1</a></li>
-                <li><a href="#">Categoria 2</a></li>
-                <li><a href="#">Carrito</a></li>
-            </ul>
-        </nav>
-        
+        <img src="./img/logo.png" alt="logo">        
     </header>
 
-    <aside>
-        <form action="" method="post">
-            <label for="usuario">Usuario</label>
-            <input type="text" name="usuario" id="usuario">
-            <label for="contrasena">Contraseña</label>
-            <input type="password" name="contrasena" id="contrasena">
-            <input type="submit" value="Iniciar sesión">
-            <input type="button" value="Registrarse">
-        </form>
-    </aside>
-
     <?php
-    require_once 'bd_controladores_principal.php';
+    session_start();
+    
+    
+    if (isset($_SESSION['mensaje_error'])) {
+        echo "<p style='color: red;'>" . $_SESSION['mensaje_error'] . "</p>";
+        unset($_SESSION['mensaje_error']);  
+    }
 
-    // Verificar la conexión a la base de datos
-    $connection = Database::connect();
-    if ($connection->connect_error) {
-        die("Error al conectar: " . $connection->connect_error);
-    } else {
-        echo "<p>Conexion exitosa</p>";
+    // Mostrar mensaje de éxito si existe
+    if (isset($_SESSION['mensaje_exito'])) {
+        echo "<p style='color: green;'>" . $_SESSION['mensaje_exito'] . "</p>";
+        unset($_SESSION['mensaje_exito']);  // Limpiar mensaje de éxito después de mostrarlo
     }
     ?>
+
+    <section>
+        <form id="loginForm" action="controllers/UsuarioController.php" method="post">
+            <fieldset>
+                <legend>Iniciar Sesión</legend>
+                <label for="nombre">Nombre</label>
+                <input type="text" name="nombre" id="nombre" >
+                <label for="contrasena">Contraseña</label>
+                <input type="password" name="contrasena" id="contrasena" >
+                <input type="hidden" name="action" id="action" value="Iniciar sesión">
+                <button type="submit" onclick="document.getElementById('action').value='Iniciar sesión'">Iniciar sesión</button>
+                <button type="submit" onclick="document.getElementById('action').value='Registrarse'">Registrarme</button>
+            </fieldset>
+        </form>
+    </section>
 
     <footer>
         <p>Badulake - 2020</p>
     </footer>
-    
 </body>
 </html>

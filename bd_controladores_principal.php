@@ -3,7 +3,7 @@ session_start();
 require_once 'autoload.php';
 // require_once __DIR__ . '/config/db.php'; // Esta línea se comenta ya que no existe el archivo db.php
 
-class Database {
+class Database {  
     public static function connect() {
         $connection = new mysqli('localhost', 'root', '', 'tienda_php');
         if ($connection->connect_error) {
