@@ -3,12 +3,9 @@ session_start();
 
 class UsuarioController {
     
-    // Constructor
-    public function __construct() {
-        // Inicialización del controlador
+   public function __construct() {
     }
 
-    // Método para manejar la solicitud del formulario
     public function manejarSolicitud() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $accion = $_POST['action'];
@@ -24,6 +21,12 @@ class UsuarioController {
                 $this->modificar_usuario();
             } elseif ($accion === 'actualizar_usuario') {
                 $this->actualizar_usuario();
+            } elseif ($accion === 'ver_pedidos') {
+                $this->ver_pedidos();
+            } elseif ($accion === 'usuario_modifica_datos') {
+                $this->usuario_modifica_datos();
+            } elseif ($accion === 'actualizar_datos') {
+                $this->actualizar_datos();
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
             $this->cargar_usuario($_GET['id']);
@@ -32,7 +35,7 @@ class UsuarioController {
         }
     }
 
-    // Método para cargar datos del usuario
+  
     private function cargar_usuario($user_id) {
         $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
 
@@ -48,7 +51,7 @@ class UsuarioController {
         $stmt->close();
         $conexion->close();
 
-        // Asignamos los valores a variables que espera modificar_usu.php
+     
         $id = $dbId;
         $nombre = $dbNombre;
         $email = $dbEmail;
@@ -58,7 +61,80 @@ class UsuarioController {
         include '../vistas/modificar_usu.php';
     }
 
-    // Método para guardar usuario modificado
+   
+    private function usuario_modifica_datos() {
+        $usuario = $_SESSION['usuario'];
+
+        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        $stmt = $conexion->prepare("SELECT nombre, email, password FROM usuarios WHERE nombre = ?");
+        $stmt->bind_param("s", $usuario);
+        $stmt->execute();
+        $stmt->bind_result($nombre, $email, $password);
+        $stmt->fetch();
+        $stmt->close();
+        $conexion->close();
+
+    
+        $_SESSION['nombre'] = $nombre;
+        $_SESSION['email'] = $email;
+        $_SESSION['password'] = $password;
+
+        include '../vistas/usuario_modifica_datos.php';
+    }
+
+   
+    private function actualizar_datos() {
+        $nombre = $_POST['nombre'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $usuario = $_SESSION['usuario'];
+
+        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+      
+        $stmt = $conexion->prepare("SELECT id FROM usuarios WHERE nombre = ? AND nombre != ?");
+        $stmt->bind_param("ss", $nombre, $usuario);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $_SESSION['mensaje_error'] = "El nombre de usuario ya está en uso. Por favor, elige otro.";
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['email'] = $email;
+            $_SESSION['password'] = $password;
+            header("Location: ../vistas/menu_tienda_usu.php");
+            exit();
+        }
+
+        $stmt->close();
+
+    
+        $stmt = $conexion->prepare("UPDATE usuarios SET nombre = ?, email = ?, password = ? WHERE nombre = ?");
+        $stmt->bind_param("ssss", $nombre, $email, $password, $usuario);
+
+        if ($stmt->execute()) {
+            $_SESSION['usuario'] = $nombre; // Actualizar el nombre de usuario en la sesión
+            $_SESSION['mensaje_exito'] = "¡Datos modificados correctamente!";
+            header("Location: ../vistas/menu_tienda_usu.php");
+            exit(); 
+        } else {
+            echo "Error al modificar los datos<br>";
+        }
+
+        $stmt->close();
+        $conexion->close();
+    }
+
+
     private function guardar_usuario() {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
@@ -88,7 +164,7 @@ class UsuarioController {
         $conexion->close();
     }
 
-    // Método para iniciar sesión y que muestre error si peta
+
     private function iniciarSesion() {
         if (!isset($_POST['nombre']) || !isset($_POST['contrasena'])) {
             session_start();
@@ -141,7 +217,7 @@ class UsuarioController {
         $conexion->close();
     }
 
-    // Método para registrar un nuevo usuario
+
     private function registrarse() {
         if (!isset($_POST['nombre']) || !isset($_POST['email']) || !isset($_POST['contrasena'])) {
             session_start();
@@ -189,7 +265,7 @@ class UsuarioController {
         $conexion->close();
     }
 
-    // Método para cerrar sesión
+
     private function logout() {
         session_start();
         session_unset();
@@ -201,7 +277,7 @@ class UsuarioController {
         exit();
     }
 
-    // Método para ver usuarios
+
     private function ver_usuarios() {
         $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
 
@@ -217,10 +293,10 @@ class UsuarioController {
 
         include '../vistas/ver_usu.php';
     }
-    // Método para modificar usuario
+
     private function modificar_usuario() {
         $user_id = $_POST['user_id'];
-        // Redirigir a la página de edición de usuario con el ID del usuario seleccionado
+   
         header("Location: ../controllers/UsuarioController.php?id=$user_id");
         exit();
     }
@@ -238,7 +314,7 @@ class UsuarioController {
             die("Error de conexión: " . $conexion->connect_error);
         }
 
-        // Verificar si el nombre de usuario ya existe
+     
         $stmt = $conexion->prepare("SELECT id FROM usuarios WHERE nombre = ? AND id != ?");
         $stmt->bind_param("si", $nombre, $id);
         $stmt->execute();
@@ -253,7 +329,7 @@ class UsuarioController {
 
         $stmt->close();
 
-        // Actualizar los datos del usuario
+
         $stmt = $conexion->prepare("UPDATE usuarios SET nombre = ?, email = ?, password = ?, rol = ? WHERE id = ?");
         $stmt->bind_param("ssssi", $nombre, $email, $password, $rol, $id);
 
