@@ -19,12 +19,12 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
         <h1>Bienvenido, <?php echo $_SESSION['usuario']; ?> (Admin)</h1>
     </header>
     <section>
-        <form action="../controllers/AdminController.php" method="post">
+        <form action="../controllers/UsuarioController.php" method="post">
             <fieldset>
                 <legend>Opciones de Administración</legend>
                 <button type="submit" name="action" value="ver_crear_categorias">Ver/Crear Categorías</button>
                 <button type="submit" name="action" value="ver_crear_productos">Ver/Crear Productos</button>
-                <button type="submit" name="action" value="ver_modificar_usuarios">Ver/Modificar Usuarios</button>
+                <button type="submit" name="action" value="ver_usuarios">Ver/Modificar Usuarios</button>
                 <button type="submit" name="action" value="logout">Logout</button>
             </fieldset>
         </form>
