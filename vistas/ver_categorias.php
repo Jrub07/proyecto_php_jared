@@ -49,9 +49,7 @@
                 <button type="submit" name="action" value="crear_categoria">Crear Categoría</button>
             </fieldset>
         </form>
-        <form action="menu_tienda_admin.php" method="get">
-            <button type="submit">Volver al Menú</button>
-        </form>
+        <button onclick="window.location.href='../vistas/menu_tienda_admin.php'">Volver al Menú</button>
     </section>
     <footer>
         <p>Badulake - 2020</p>
