@@ -1,4 +1,10 @@
-
+<?php
+session_start();
+if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
+    header("Location: ../index.php");
+    exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +30,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,11 +39,21 @@
                         <tr>
                             <td><?php echo htmlspecialchars($categoria['id']); ?></td>
                             <td><?php echo htmlspecialchars($categoria['nombre']); ?></td>
+                            <td>
+                                <form action="../controllers/CategoriaController.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?php echo $categoria['id']; ?>">
+                                    <button type="submit" name="action" value="modificar_categoria">Modificar</button>
+                                </form>
+                                <form action="../controllers/CategoriaController.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?php echo $categoria['id']; ?>">
+                                    <button type="submit" name="action" value="eliminar_categoria">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="2">No se encontraron categorías.</td>
+                        <td colspan="3">No se encontraron categorías.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
@@ -49,9 +66,7 @@
                 <button type="submit" name="action" value="crear_categoria">Crear Categoría</button>
             </fieldset>
         </form>
-        <form action="menu_tienda_admin.php" method="get">
-            <button type="submit">Volver al Menú</button>
-        </form>
+        <button onclick="window.location.href='../vistas/menu_tienda_admin.php'">Volver al Menú</button>
     </section>
     <footer>
         <p>Badulake - 2020</p>

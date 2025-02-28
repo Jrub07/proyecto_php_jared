@@ -31,16 +31,16 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
                 <button type="submit" name="action" value="ver_categorias">Ver/Crear Categorías</button>
             </fieldset>
         </form>
-        <form action="../controllers/ProductoController.php" method="post">
+        <!-- <form action="../controllers/ProductoController.php" method="post">
             <fieldset>
                 <legend>Opciones de Productos</legend>
                 <button type="submit" name="action" value="ver_productos">Ver Productos</button>
                 <button type="submit" name="action" value="ver_crear_productos">Ver/Crear Productos</button>
             </fieldset>
-        </form>
-        <form action="../controllers/PedidoController.php" method="post">
+        </form> -->
+        <form action="../controllers/ProductoController.php" method="post">
             <fieldset>
-                <legend>Opciones de Pedidos</legend>
+                <legend>Opciones de Productos</legend>
                 <button type="submit" name="action" value="ver_productos">Ver Productos</button>
             </fieldset>
         </form>
