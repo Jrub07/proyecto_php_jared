@@ -172,6 +172,22 @@ class ProductoController {
         header("Location: ../vistas/menu_tienda_admin.php");
         exit();
     }
+
+    public function obtenerProductos() {
+        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        $stmt = $conexion->query("SELECT nombre, descripcion, precio, imagen FROM productos");
+        $productos = $stmt->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+        $conexion->close();
+
+        return $productos;
+    }
 }
 
 $controlador = new ProductoController();

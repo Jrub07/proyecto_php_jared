@@ -14,7 +14,7 @@ header {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  background-color: rgb(131, 194, 36);
+  background-color: rgb(102, 151, 28);
   color: white;
   padding: 10px;
   position: fixed;
@@ -92,7 +92,7 @@ section button {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: rgb(131, 194, 36);
+  background-color: rgb(102, 151, 28);
   color: white;
   cursor: pointer;
   margin-top: 10px;
@@ -100,12 +100,12 @@ section button {
 }
 
 section button:hover {
-  background-color: rgb(111, 174, 16);
+  background-color: rgb(102, 151, 28);
 }
 
 footer {
   width: 100%;
-  background-color: rgb(131, 194, 36);
+  background-color: rgb(102, 151, 28);
   color: white;
   text-align: center;
   padding: 10px;
