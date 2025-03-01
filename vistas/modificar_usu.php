@@ -18,7 +18,6 @@ if ($stmt->num_rows > 0) {
     $stmt->bind_result($nombre, $email, $password, $rol);
     $stmt->fetch();
 } else {
-    // Si no encuentra el usuario, asigna valores vacíos para evitar errores en el HTML
     $nombre = $email = $password = $rol = "No encontrado";
 }
 
@@ -32,18 +31,18 @@ $conexion->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
-    <link rel="stylesheet" href="../styles/modificar_usu.css">
+    <link rel="stylesheet" href="../styles/menu_opciones.css">
 </head>
 <body>
     <header>
         <h1>Modificar Usuario</h1>
     </header>
-    <section>
+    <section id="modify-user-section">
         <?php if (isset($_SESSION['mensaje_error'])): ?>
             <p style="color: red;"><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
         <?php endif; ?>
         <h2>Datos del Usuario</h2>
-        <table>
+        <table id="user-table">
             <tr>
                 <th>ID</th>
                 <td><?php echo htmlspecialchars($id); ?></td>
@@ -68,7 +67,7 @@ $conexion->close();
     </section>
     <section>
         <h2>Editar Usuario</h2>
-        <form action="../controllers/UsuarioController.php" method="post">
+        <form id="user-form" action="../controllers/UsuarioController.php" method="post">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>

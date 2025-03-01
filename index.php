@@ -13,21 +13,22 @@
 
     <?php
     session_start();
-    
-    
-    if (isset($_SESSION['mensaje_error'])) {
-        echo "<p style='color: red;'>" . $_SESSION['mensaje_error'] . "</p>";
-        unset($_SESSION['mensaje_error']);  
-    }
-
-    // Mostrar mensaje de éxito si existe
-    if (isset($_SESSION['mensaje_exito'])) {
-        echo "<p style='color: green;'>" . $_SESSION['mensaje_exito'] . "</p>";
-        unset($_SESSION['mensaje_exito']);  // Limpiar mensaje de éxito después de mostrarlo
-    }
+    var_dump($_SESSION);
     ?>
 
     <section>
+        <?php
+        if (isset($_SESSION['mensaje_error'])) {
+            echo "<p style='color: red; text-align: center;'>" . $_SESSION['mensaje_error'] . "</p>";
+            unset($_SESSION['mensaje_error']);  
+        }
+
+        if (isset($_SESSION['mensaje_exito'])) {
+            echo "<p style='color: green; text-align: center;'>" . $_SESSION['mensaje_exito'] . "</p>";
+            unset($_SESSION['mensaje_exito']);  
+        }
+        ?>
+        
         <form id="loginForm" action="controllers/UsuarioController.php" method="post">
             <fieldset>
                 <legend>Iniciar Sesión</legend>

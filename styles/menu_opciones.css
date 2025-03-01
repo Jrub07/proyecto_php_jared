@@ -1,0 +1,190 @@
+body, html {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(212, 196, 196);
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(131, 194, 36);
+  color: white;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+header h1 {
+  margin: 0;
+}
+
+nav {
+  border: 1px solid black;
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+nav ul {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+header img {
+  max-width: 10%;
+}
+
+section {
+  background-color: #fff;
+  padding: 20px; /* Reducido de 30px a 20px */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  margin-top: 80px; /* Reducido de 100px a 80px */
+  margin-bottom: 40px; /* Reducido de 80px a 40px */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  max-height: calc(100vh - 120px); /* Ajustado de 180px a 120px */
+}
+
+section form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+legend {
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+section label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+section input[type="text"],
+section input[type="email"],
+section input[type="password"],
+section input[type="number"],
+section input[type="file"],
+section textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px; /* Reducido de 15px a 10px */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+section button {
+  width: auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(131, 194, 36);
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+section button:hover {
+  background-color: rgb(111, 174, 16);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: rgb(131, 194, 36);
+  color: white;
+}
+
+footer {
+  width: 100%;
+  background-color: rgb(131, 194, 36);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+#user-section, #modify-user-section {
+  overflow-y: hidden;
+}
+
+#user-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+#user-table, #user-table th, #user-table td {
+  border: 1px solid #ccc;
+}
+
+#user-table th, #user-table td {
+  padding: 10px;
+  text-align: left;
+}
+
+#user-table th {
+  background-color: rgb(131, 194, 36);
+  color: white;
+}

@@ -3,7 +3,7 @@ session_start();
 
 class UsuarioController {
     
-   public function __construct() {
+    public function __construct() {
     }
 
     public function manejarSolicitud() {
@@ -21,6 +21,8 @@ class UsuarioController {
                 $this->modificar_usuario();
             } elseif ($accion === 'actualizar_usuario') {
                 $this->actualizar_usuario();
+            } elseif ($accion === 'eliminar_usuario') {
+                $this->eliminar_usuario();
             } elseif ($accion === 'ver_pedidos') {
                 $this->ver_pedidos();
             } elseif ($accion === 'usuario_modifica_datos') {
@@ -295,8 +297,7 @@ class UsuarioController {
     }
 
     private function modificar_usuario() {
-        $user_id = $_POST['user_id'];
-   
+        $user_id = $_POST['id'];
         header("Location: ../controllers/UsuarioController.php?id=$user_id");
         exit();
     }
@@ -340,6 +341,31 @@ class UsuarioController {
             exit(); 
         } else {
             echo "Error al modificar el usuario<br>";
+        }
+
+        $stmt->close();
+        $conexion->close();
+    }
+
+    private function eliminar_usuario() {
+        $id = $_POST['id'];
+
+        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        $stmt = $conexion->prepare("DELETE FROM usuarios WHERE id = ?");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            session_start();
+            $_SESSION['mensaje_exito'] = "¡Usuario eliminado correctamente!";
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit(); 
+        } else {
+            echo "Error al eliminar el usuario<br>";
         }
 
         $stmt->close();

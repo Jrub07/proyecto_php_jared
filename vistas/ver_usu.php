@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ver/Modificar Usuarios</title>
-    <link rel="stylesheet" href="../styles/ver_usuarios.css">
+    <title>Ver Usuario</title>
+    <link rel="stylesheet" href="../styles/menu_opciones.css">
+    
 </head>
 <body>
     <header>
-        <h1>Lista de Usuarios</h1>
+        <h1>Ver Usuario</h1>
     </header>
-    <section>
-        <table>
+    <section id="user-section">
+        <form id="user-form">
+            <!-- Formulario de usuario -->
+        </form>
+        <table id="user-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Email</th>
-                    <th>Password</th>
                     <th>Rol</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,8 +32,17 @@
                             <td><?php echo htmlspecialchars($usuario['id']); ?></td>
                             <td><?php echo htmlspecialchars($usuario['nombre']); ?></td>
                             <td><?php echo htmlspecialchars($usuario['email']); ?></td>
-                            <td><?php echo htmlspecialchars($usuario['password']); ?></td>
                             <td><?php echo htmlspecialchars($usuario['rol']); ?></td>
+                            <td>
+                                <form action="../controllers/UsuarioController.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
+                                    <button type="submit" name="action" value="modificar_usuario">Modificar</button>
+                                </form>
+                                <form action="../controllers/UsuarioController.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
+                                    <button type="submit" name="action" value="eliminar_usuario">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -39,16 +52,6 @@
                 <?php endif; ?>
             </tbody>
         </table>
-    </section>
-    <section>
-        <form action="../controllers/UsuarioController.php" method="post">
-            <fieldset>
-                <legend>Seleccionar Usuario por ID</legend>
-                <label for="user_id">ID del Usuario:</label>
-                <input type="number" id="user_id" name="user_id" required>
-                <button type="submit" name="action" value="modificar_usuario">Modificar Usuario</button>
-            </fieldset>
-        </form>
         <button onclick="window.location.href='../vistas/menu_tienda_admin.php'">Volver al Menú</button>
     </section>
     <footer>
