@@ -1,5 +1,9 @@
 <?php
+session_start();
 
+require_once '../bd_controladores_principal.php';
+
+use App\Database\Database;
 
 class ProductoController {
     
@@ -25,22 +29,38 @@ class ProductoController {
     }
 
     private function ver_productos() {
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
 
+        // Obtener los productos
         $stmt = $conexion->query("SELECT id, categoria_id, nombre, precio, stock, oferta, descripcion, imagen FROM productos");
         $productos = $stmt->fetch_all(MYSQLI_ASSOC);
 
-        $stmt->close();
+        // Obtener los valores mínimo y máximo de categoria_id
+        $sql = "SELECT MIN(categoria_id) as minCategoriaId, MAX(categoria_id) as maxCategoriaId FROM categorias";
+        $resultado = $conexion->query($sql);
+
+        if ($resultado && $resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+            $minCategoriaId = $fila['minCategoriaId'];
+            $maxCategoriaId = $fila['maxCategoriaId'];
+        } else {
+            // Valores por defecto en caso de que no haya categorías en la base de datos
+            $minCategoriaId = 1;
+            $maxCategoriaId = 100;
+        }
+
         $conexion->close();
 
         include '../vistas/ver_productos.php';
     }
 
     private function crear_producto() {
+        session_start(); // Iniciar la sesión para almacenar mensajes de error
+
         $categoria_id = $_POST['categoria_id'];
         $nombre = $_POST['nombre'];
         $precio = $_POST['precio'];
@@ -51,18 +71,32 @@ class ProductoController {
         $imagen_tmp = $_FILES['imagen']['tmp_name'];
         $imagen_path = "../uploads/" . basename($imagen);
 
+        $conexion = Database::connect();
+
+        if ($conexion->connect_error) {
+            $_SESSION['mensaje_error'] = "Error de conexión: " . $conexion->connect_error;
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
+        }
+
+        // Verificar si la oferta no supera el stock
+        if ($oferta > $stock) {
+            $_SESSION['mensaje_error'] = "Tu stock es inferior a la oferta.";
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
+        }
+
         if (!is_dir('../uploads')) {
             mkdir('../uploads', 0777, true);
         }
 
         if (move_uploaded_file($imagen_tmp, $imagen_path)) {
-            $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
-
-            if ($conexion->connect_error) {
-                die("Error de conexión: " . $conexion->connect_error);
-            }
-
             $stmt = $conexion->prepare("INSERT INTO productos (categoria_id, nombre, precio, stock, oferta, descripcion, imagen) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            if (!$stmt) {
+                $_SESSION['mensaje_error'] = "Error en la preparación de la consulta: " . $conexion->error;
+                header("Location: ../vistas/menu_tienda_admin.php");
+                exit();
+            }
             $stmt->bind_param("isdiiss", $categoria_id, $nombre, $precio, $stock, $oferta, $descripcion, $imagen_path);
 
             if ($stmt->execute()) {
@@ -86,7 +120,7 @@ class ProductoController {
 
     private function mostrar_formulario_modificar() {
         $id = $_POST['id'];
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -115,7 +149,7 @@ class ProductoController {
         $imagen = $_FILES['imagen']['name'];
         $imagen_tmp = $_FILES['imagen']['tmp_name'];
 
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -151,7 +185,7 @@ class ProductoController {
     }
 
     private function eliminar_producto($id) {
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -174,13 +208,13 @@ class ProductoController {
     }
 
     public function obtenerProductos() {
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
 
-        $stmt = $conexion->query("SELECT nombre, descripcion, precio, imagen FROM productos");
+        $stmt = $conexion->query("SELECT id, categoria_id, nombre, precio, stock, oferta, descripcion, imagen FROM productos");
         $productos = $stmt->fetch_all(MYSQLI_ASSOC);
 
         $stmt->close();

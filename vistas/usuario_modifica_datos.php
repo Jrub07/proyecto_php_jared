@@ -39,9 +39,8 @@
             <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($password); ?>" required>
             <button type="submit" name="action" value="actualizar_datos">Guardar Cambios</button>
         </form>
-        <form action="menu_tienda_usu.php" method="get">
-            <button type="submit">Volver al Menú</button>
-        </form>
+        <button onclick="window.location.href='../vistas/menu_tienda_usu.php'">Volver al Menú</button>
+
     </section>
     <footer>
         <p>Badulake - 2020</p>

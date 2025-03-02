@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,15 +60,15 @@
             <fieldset>
                 <legend>Crear Nuevo Producto</legend>
                 <label for="categoria_id">Categoría ID:</label>
-                <input type="number" id="categoria_id" name="categoria_id" required>
+                <input type="number" id="categoria_id" name="categoria_id" required min="<?php echo $minCategoriaId; ?>" max="<?php echo $maxCategoriaId; ?>">
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
                 <label for="precio">Precio:</label>
-                <input type="number" step="0.01" id="precio" name="precio" required>
+                <input type="number" step="0.01" id="precio" name="precio" required min="0">
                 <label for="stock">Stock:</label>
-                <input type="number" id="stock" name="stock" required>
+                <input type="number" id="stock" name="stock" required min="0">
                 <label for="oferta">Oferta:</label>
-                <input type="number" id="oferta" name="oferta" required>
+                <input type="number" id="oferta" name="oferta" required min="0">
                 <label for="descripcion">Descripción:</label>
                 <textarea id="descripcion" name="descripcion" required></textarea>
                 <label for="imagen">Imagen:</label>

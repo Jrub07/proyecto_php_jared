@@ -24,29 +24,39 @@ $productos = $productoController->obtenerProductos();
     </header>
     <div class="content">
         <section>
-            <?php if (isset($_SESSION['mensaje_error'])): ?>
-                <p style="color: red;"><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
-            <?php endif; ?>
-            <?php if (isset($_SESSION['mensaje_exito'])): ?>
-                <p style="color: green;"><?php echo $_SESSION['mensaje_exito']; unset($_SESSION['mensaje_exito']); ?></p>
-            <?php endif; ?>
-            
             <div class="productos">
                 <?php foreach ($productos as $producto): ?>
                     <div class="producto">
                         <img src="../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
                         <h3><?php echo htmlspecialchars($producto['nombre']); ?></h3>
                         <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
-                        <p>Precio: $<?php echo htmlspecialchars($producto['precio']); ?></p>
+                        <p class="precio">Precio: $<?php echo htmlspecialchars($producto['precio']); ?></p>
+                        <p class="stock">Stock: <?php echo htmlspecialchars($producto['stock']); ?></p>
+                        <p class="oferta">Oferta: <?php echo htmlspecialchars($producto['oferta']); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
         </section>
+
+        <!-- Mensajes de error o éxito dentro del aside -->
         <aside>
+            <?php if (isset($_SESSION['mensaje_error'])): ?>
+                <div class="mensaje error">
+                    <p><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['mensaje_exito'])): ?>
+                <div class="mensaje exito">
+                    <p><?php echo $_SESSION['mensaje_exito']; unset($_SESSION['mensaje_exito']); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <!-- Formulario de opciones de usuario y categorías -->
             <form action="../controllers/UsuarioController.php" method="post">
                 <fieldset>
                     <legend>Opciones de Usuario</legend>
-                    <button type="submit" name="action" value="usuario_modifica_datos">Modificar Datos</button>
+                    <button type="submit" name="action" value="ver_usuarios">Modificar Datos</button>
                     <button type="submit" name="action" value="logout">Logout</button>
                 </fieldset>
             </form>
@@ -62,15 +72,10 @@ $productos = $productoController->obtenerProductos();
                     <button type="submit" name="action" value="ver_productos">Ver Productos</button>
                 </fieldset>
             </form>
-            <form action="../controllers/UsuarioController.php" method="post">
-                <fieldset>
-                    <legend>Opciones de Usuarios</legend>
-                    <button type="submit" name="action" value="ver_usuarios">Ver/Modificar Usuarios</button>
-                    <button type="submit" name="action" value="logout">Logout</button>
-                </fieldset>
-            </form>
+            
         </aside>
     </div>
+    
     <footer>
         <p>Badulake - 2020</p>
     </footer>

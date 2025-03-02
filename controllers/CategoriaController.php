@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+require_once '../bd_controladores_principal.php';
+
+use App\Database\Database;
+
 class CategoriaController {
     
     public function __construct() {
@@ -27,7 +31,7 @@ class CategoriaController {
     }
 
     private function ver_categorias() {
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -45,7 +49,7 @@ class CategoriaController {
     private function crear_categoria() {
         $nombre = $_POST['nombre'];
 
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -83,7 +87,7 @@ class CategoriaController {
 
     private function mostrar_formulario_modificar() {
         $id = $_POST['id'];
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -105,7 +109,7 @@ class CategoriaController {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
 
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
@@ -129,13 +133,12 @@ class CategoriaController {
     }
 
     private function eliminar_categoria($id) {
-        $conexion = new mysqli('localhost', 'root', '', 'tienda_php');
+        $conexion = Database::connect();
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
 
-        
         $stmt = $conexion->prepare("DELETE FROM productos WHERE categoria_id = ?");
         $stmt->bind_param("i", $id);
         if (!$stmt->execute()) {
@@ -147,7 +150,6 @@ class CategoriaController {
         }
         $stmt->close();
 
-        
         $stmt = $conexion->prepare("DELETE FROM categorias WHERE id = ?");
         $stmt->bind_param("i", $id);
 

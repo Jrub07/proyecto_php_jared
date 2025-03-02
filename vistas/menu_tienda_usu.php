@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 
 require_once '../controllers/ProductoController.php';
 $productoController = new ProductoController();
@@ -15,7 +16,7 @@ $productos = $productoController->obtenerProductos();
 </head>
 <body>
     <header>
-        <h1>Bienvenido, <?php echo $_SESSION['usuario']; ?> (Usuario)</h1>
+        <h1>Bienvenido, <?php echo isset($_SESSION['usuario']) ? htmlspecialchars($_SESSION['usuario']) : 'Invitado'; ?> (Usuario)</h1>
     </header>
     <div class="content">
         <section>
@@ -25,7 +26,9 @@ $productos = $productoController->obtenerProductos();
                         <img src="../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
                         <h3><?php echo htmlspecialchars($producto['nombre']); ?></h3>
                         <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
-                        <p>Precio: $<?php echo htmlspecialchars($producto['precio']); ?></p>
+                        <p class="precio">Precio: $<?php echo htmlspecialchars($producto['precio']); ?></p>
+                        <p class="stock">Stock: <?php echo htmlspecialchars($producto['stock']); ?></p>
+                        <p class="oferta">Oferta: <?php echo htmlspecialchars($producto['oferta']); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -34,7 +37,6 @@ $productos = $productoController->obtenerProductos();
             <form action="../controllers/UsuarioController.php" method="post">
                 <fieldset>
                     <legend>Opciones de Usuario</legend>
-                   
                     <button type="submit" name="action" value="usuario_modifica_datos">Modificar Datos</button>
                     <button type="submit" name="action" value="logout">Logout</button>
                 </fieldset>
