@@ -1,7 +1,7 @@
 <?php
 namespace App\Database;
 
-session_start();
+
 
 class Database {  
     public static function connect() {

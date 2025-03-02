@@ -10,7 +10,7 @@ $productos = $productoController->obtenerProductos();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/menu_opciones.css">
+    <link rel="stylesheet" href="../styles/tienda_usu.css">
     <title>Menú Tienda Usuario</title>
 </head>
 <body>
@@ -34,7 +34,7 @@ $productos = $productoController->obtenerProductos();
             <form action="../controllers/UsuarioController.php" method="post">
                 <fieldset>
                     <legend>Opciones de Usuario</legend>
-                    <button type="submit" name="action" value="ver_pedidos">Ver Pedidos</button>
+                   
                     <button type="submit" name="action" value="usuario_modifica_datos">Modificar Datos</button>
                     <button type="submit" name="action" value="logout">Logout</button>
                 </fieldset>

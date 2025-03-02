@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Productos</title>
-    <link rel="stylesheet" href="../styles/menu_opciones.css">
+    <link rel="stylesheet" href="../styles/ver_producto.css">
 </head>
 <body>
     <header>

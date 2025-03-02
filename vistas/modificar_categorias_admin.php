@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
     header("Location: ../index.php");
     exit();
@@ -18,7 +18,7 @@ if (!isset($categoria) || !is_array($categoria)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Categoría</title>
-    <link rel="stylesheet" href="../styles/modificar_categorias_admin.css">
+    <link rel="stylesheet" href="../styles/modificar_categorias.css">
 </head>
 <body>
     <header>
@@ -40,7 +40,7 @@ if (!isset($categoria) || !is_array($categoria)) {
                 <button type="submit" name="action" value="actualizar_categoria">Actualizar Categoría</button>
             </fieldset>
         </form>
-        <button onclick="window.location.href='../vistas/ver_categorias.php'">Volver a Categorías</button>
+        <button onclick="window.location.href='../vistas/menu_tienda_admin.php'">Volver al Menú</button>
     </section>
     <footer>
         <p>Badulake - 2020</p>

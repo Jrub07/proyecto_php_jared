@@ -1,29 +1,3 @@
-<?php
-
-
-$id = $_GET['id'] ?? 0; // Asegurar que se recibe un ID válido
-
-$conexion = new mysqli('localhost', 'root', '', 'tienda_php');
-
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
-}
-
-$stmt = $conexion->prepare("SELECT nombre, email, password, rol FROM usuarios WHERE id = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$stmt->store_result();
-
-if ($stmt->num_rows > 0) {
-    $stmt->bind_result($nombre, $email, $password, $rol);
-    $stmt->fetch();
-} else {
-    $nombre = $email = $password = $rol = "No encontrado";
-}
-
-$stmt->close();
-$conexion->close();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -31,7 +5,7 @@ $conexion->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
-    <link rel="stylesheet" href="../styles/menu_opciones.css">
+    <link rel="stylesheet" href="../styles/modificar_usu.css">
 </head>
 <body>
     <header>

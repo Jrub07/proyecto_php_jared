@@ -1,10 +1,4 @@
-<?php
-session_start();
-if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
-    header("Location: ../index.php");
-    exit();
-}
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +6,7 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ver Categorías</title>
-    <link rel="stylesheet" href="../styles/menu_opciones.css">
+    <link rel="stylesheet" href="../styles/ver_categorias.css">
 </head>
 <body>
     <header>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Datos</title>
-    <link rel="stylesheet" href="../styles/modificar_datos.css">
+    <link rel="stylesheet" href="../styles/usuario_modifica_datos.css">
 </head>
 <body>
     <header>

@@ -11,7 +11,7 @@ body {
 header {
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     background-color: rgb(102, 151, 28);
     color: white;
     padding: 10px;
@@ -21,6 +21,11 @@ header {
     z-index: 1000;
 }
 
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
 section {
     background-color: #fff;
     padding: 20px;
@@ -28,10 +33,20 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 800px;
-    margin: 100px auto 60px auto;
+    margin: 80px auto 60px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#modify-user-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 table {
@@ -40,24 +55,15 @@ table {
     margin-top: 15px;
 }
 
-thead {
-    background-color: rgb(102, 151, 28);
-    color: white;
-}
-
-thead th {
+th, td {
     padding: 10px;
     text-align: left;
-    border-bottom: 2px solid #ddd;
-}
-
-tbody td {
-    padding: 10px;
     border-bottom: 1px solid #ddd;
 }
 
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+th {
+    background-color: rgb(102, 151, 28);
+    color: white;
 }
 
 button {
@@ -68,30 +74,29 @@ button {
     cursor: pointer;
     border-radius: 5px;
     font-size: 14px;
-    margin-right: 5px;
+    margin-top: 10px;
 }
 
 button:hover {
     background-color: rgb(82, 121, 20);
 }
 
-form fieldset {
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 20px;
+form {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 20px;
 }
 
-legend {
+form label {
+    margin-bottom: 5px;
     font-weight: bold;
-    padding: 0 10px;
 }
 
-input[type="text"] {
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
     width: calc(100% - 20px);
     padding: 8px;
     margin: 10px 0;
