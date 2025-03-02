@@ -12,15 +12,6 @@ Este proyecto es una aplicación web llamada "Badulake" que permite a los usuari
 - **styles/**: Carpeta que contiene los archivos CSS para el estilo de la aplicación.
 - **img/**: Carpeta que contiene las imágenes utilizadas en la aplicación.
 
-## Instalación
-
-1. Clona el repositorio en tu servidor local.
-    ```sh
-    git clone https://github.com/tu_usuario/proyecto_php_jared.git
-    ```
-2. Configura tu servidor web (por ejemplo, XAMPP) para que apunte a la carpeta del proyecto.
-3. Crea una base de datos en MySQL llamada `tienda_php` y ejecuta el script SQL proporcionado en `database/tienda_php.sql` para crear las tablas necesarias.
-4. Asegúrate de que las credenciales de la base de datos en los archivos PHP coincidan con las de tu servidor MySQL.
 
 ## Uso
 
