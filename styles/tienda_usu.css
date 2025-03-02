@@ -10,14 +10,13 @@ body {
 
 header {
     width: 100%;
-    display: flex;
-    justify-content: center;
     background-color: rgb(102, 151, 28);
     color: white;
     padding: 10px;
     position: fixed;
     top: 0;
     left: 0;
+    text-align: center;
     z-index: 1000;
 }
 
@@ -41,6 +40,8 @@ section {
 
 aside {
     width: 25%;
+    max-width: 300px;
+    height: 300px; /* Tamaño fijo */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
@@ -48,6 +49,8 @@ aside {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    position: sticky;
+    top: 80px; /* Se ubica justo debajo del header */
 }
 
 .productos {
@@ -57,7 +60,7 @@ aside {
 }
 
 .producto {
-    background-color: white;
+    background-color: #fff;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
