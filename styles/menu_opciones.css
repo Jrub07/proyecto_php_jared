@@ -6,6 +6,9 @@ body, html {
   display: flex;
   flex-direction: column;
   background-color: rgb(212, 196, 196);
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 header {
