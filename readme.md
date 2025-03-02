@@ -12,7 +12,6 @@ Este proyecto es una aplicación web llamada "Badulake" que permite a los usuari
 - **styles/**: Carpeta que contiene los archivos CSS para el estilo de la aplicación.
 - **img/**: Carpeta que contiene las imágenes utilizadas en la aplicación.
 
-
 ## Uso
 
 ### Página Principal
@@ -47,6 +46,7 @@ El archivo `controllers/CategoriaController.php` maneja las siguientes acciones:
 - **actualizar_categoria()**: Actualiza los datos de una categoría específica en la base de datos.
 - **eliminar_categoria($id)**: Elimina una categoría específica de la base de datos.
 - **ver_crear_productos()**: Método placeholder para ver y crear productos (a implementar).
+- **obtenerCategorias()**: Obtiene una lista de categorías desde la base de datos y las devuelve como un array asociativo.
 
 ### Controlador de Productos
 
@@ -59,6 +59,7 @@ El archivo `controllers/ProductoController.php` maneja las siguientes acciones:
 - **actualizar_producto()**: Actualiza los datos de un producto específico en la base de datos.
 - **eliminar_producto($id)**: Elimina un producto específico de la base de datos.
 - **obtenerProductos()**: Obtiene una lista de productos desde la base de datos y los devuelve como un array asociativo.
+- **obtenerProductosPorCategoria($categoria_id)**: Obtiene una lista de productos de una categoría específica desde la base de datos y los devuelve como un array asociativo.
 
 ### Vistas
 
