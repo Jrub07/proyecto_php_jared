@@ -6,8 +6,19 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'admin') {
 }
 
 require_once '../controllers/ProductoController.php';
+require_once '../controllers/CategoriaController.php';
+
 $productoController = new ProductoController();
-$productos = $productoController->obtenerProductos();
+$categoriaController = new CategoriaController();
+
+$categorias = $categoriaController->obtenerCategorias();
+
+$categoriaSeleccionada = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : null;
+if ($categoriaSeleccionada) {
+    $productos = $productoController->obtenerProductosPorCategoria($categoriaSeleccionada);
+} else {
+    $productos = $productoController->obtenerProductos();
+}
 ?>
 
 <!DOCTYPE html>
@@ -15,19 +26,32 @@ $productos = $productoController->obtenerProductos();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Tienda Admin</title>
     <link rel="stylesheet" href="../styles/menu_opciones.css">
+    <title>Menú Tienda Admin</title>
 </head>
 <body>
     <header>
-        <h1>Bienvenido, <?php echo $_SESSION['usuario']; ?> (Admin)</h1>
+        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['usuario']); ?> (Admin)</h1>
+        <nav>
+            <ul>
+                <li><a href="menu_tienda_admin.php">Inicio</a></li>
+                <?php if (is_array($categorias) && count($categorias) > 0): ?>
+                    <?php foreach ($categorias as $categoria): ?>
+                        <li><a href="#"><?php echo htmlspecialchars($categoria['nombre']); ?></a></li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>No hay categorías disponibles</li>
+                <?php endif; ?>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
     <div class="content">
         <section>
             <div class="productos">
                 <?php foreach ($productos as $producto): ?>
                     <div class="producto">
-                        <img src="../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
+                        <img src="<?php echo htmlspecialchars($producto['imagen']); ?>" alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
                         <h3><?php echo htmlspecialchars($producto['nombre']); ?></h3>
                         <p><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                         <p class="precio">Precio: $<?php echo htmlspecialchars($producto['precio']); ?></p>
@@ -42,13 +66,13 @@ $productos = $productoController->obtenerProductos();
         <aside>
             <?php if (isset($_SESSION['mensaje_error'])): ?>
                 <div class="mensaje error">
-                    <p><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
+                    <p><?php echo htmlspecialchars($_SESSION['mensaje_error']); unset($_SESSION['mensaje_error']); ?></p>
                 </div>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['mensaje_exito'])): ?>
                 <div class="mensaje exito">
-                    <p><?php echo $_SESSION['mensaje_exito']; unset($_SESSION['mensaje_exito']); ?></p>
+                    <p><?php echo htmlspecialchars($_SESSION['mensaje_exito']); unset($_SESSION['mensaje_exito']); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -72,10 +96,8 @@ $productos = $productoController->obtenerProductos();
                     <button type="submit" name="action" value="ver_productos">Ver Productos</button>
                 </fieldset>
             </form>
-            
         </aside>
     </div>
-    
     <footer>
         <p>Badulake - 2020</p>
     </footer>

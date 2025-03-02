@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 require_once '../bd_controladores_principal.php';
 
@@ -168,6 +170,28 @@ class CategoriaController {
 
     private function ver_crear_productos() {
         echo "Ver/Crear Productos - A implementar";
+    }
+
+    public function obtenerCategorias() {
+        $conexion = Database::connect();
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        $query = "SELECT id, nombre FROM categorias";
+        $result = $conexion->query($query);
+        $categorias = [];
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $categorias[] = $row;
+            }
+        } else {
+            $_SESSION['mensaje_error'] = "Error al obtener las categorías: " . $conexion->error;
+        }
+
+        $conexion->close();
+        return $categorias;
     }
 }
 

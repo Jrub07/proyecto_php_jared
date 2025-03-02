@@ -1,9 +1,14 @@
 <?php
-session_start(); 
+session_start();
 
 require_once '../controllers/ProductoController.php';
+require_once '../controllers/CategoriaController.php';
+
 $productoController = new ProductoController();
+$categoriaController = new CategoriaController();
+
 $productos = $productoController->obtenerProductos();
+$categorias = $categoriaController->obtenerCategorias();
 ?>
 
 <!DOCTYPE html>
@@ -17,6 +22,19 @@ $productos = $productoController->obtenerProductos();
 <body>
     <header>
         <h1>Bienvenido, <?php echo isset($_SESSION['usuario']) ? htmlspecialchars($_SESSION['usuario']) : 'Invitado'; ?> (Usuario)</h1>
+        <nav>
+            <ul>
+                <li><a href="menu_tienda_usu.php">Inicio</a></li>
+                <?php if (is_array($categorias) && count($categorias) > 0): ?>
+                    <?php foreach ($categorias as $categoria): ?>
+                        <li><a href="#"><?php echo htmlspecialchars($categoria['nombre']); ?></a></li>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <li>No hay categorías disponibles</li>
+                <?php endif; ?>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
     <div class="content">
         <section>
@@ -36,13 +54,13 @@ $productos = $productoController->obtenerProductos();
         <aside>
             <?php if (isset($_SESSION['mensaje_error'])): ?>
                 <div class="mensaje error">
-                    <p><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
+                    <p><?php echo htmlspecialchars($_SESSION['mensaje_error']); unset($_SESSION['mensaje_error']); ?></p>
                 </div>
             <?php endif; ?>
 
             <?php if (isset($_SESSION['mensaje_exito'])): ?>
                 <div class="mensaje exito">
-                    <p><?php echo $_SESSION['mensaje_exito']; unset($_SESSION['mensaje_exito']); ?></p>
+                    <p><?php echo htmlspecialchars($_SESSION['mensaje_exito']); unset($_SESSION['mensaje_exito']); ?></p>
                 </div>
             <?php endif; ?>
 

@@ -34,7 +34,6 @@ class ProductoController {
             die("Error de conexión: " . $conexion->connect_error);
         }
 
-        // Obtener los productos
         $stmt = $conexion->query("SELECT id, categoria_id, nombre, precio, stock, oferta, descripcion, imagen FROM productos");
         $productos = $stmt->fetch_all(MYSQLI_ASSOC);
 
@@ -44,7 +43,7 @@ class ProductoController {
     }
 
     private function crear_producto() {
-        session_start(); // Iniciar la sesión para almacenar mensajes de error
+        session_start();
 
         $categoria_id = $_POST['categoria_id'];
         $nombre = $_POST['nombre'];
@@ -64,14 +63,12 @@ class ProductoController {
             exit();
         }
 
-        // Verificar si la oferta no supera el stock
         if ($oferta > $stock) {
             $_SESSION['mensaje_error'] = "Tu stock es inferior a la oferta.";
             header("Location: ../vistas/menu_tienda_admin.php");
             exit();
         }
 
-        // Verificar si la categoría existe
         $stmt = $conexion->prepare("SELECT id FROM categorias WHERE id = ?");
         $stmt->bind_param("i", $categoria_id);
         $stmt->execute();
@@ -138,7 +135,7 @@ class ProductoController {
     }
 
     private function actualizar_producto() {
-        session_start(); // Iniciar la sesión para almacenar mensajes de error
+        session_start();
 
         $id = $_POST['id'];
         $categoria_id = $_POST['categoria_id'];
@@ -158,14 +155,12 @@ class ProductoController {
             exit();
         }
 
-        // Verificar si la oferta no supera el stock
         if ($oferta > $stock) {
             $_SESSION['mensaje_error'] = "Tu stock es inferior a la oferta.";
             header("Location: ../vistas/menu_tienda_admin.php");
             exit();
         }
 
-        // Verificar si la categoría existe
         $stmt = $conexion->prepare("SELECT id FROM categorias WHERE id = ?");
         $stmt->bind_param("i", $categoria_id);
         $stmt->execute();
@@ -244,6 +239,32 @@ class ProductoController {
 
         $stmt = $conexion->query("SELECT id, categoria_id, nombre, precio, stock, oferta, descripcion, imagen FROM productos");
         $productos = $stmt->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+        $conexion->close();
+
+        return $productos;
+    }
+
+    public function obtenerProductosPorCategoria($categoria_id) {
+        $conexion = Database::connect();
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+
+        $stmt = $conexion->prepare("SELECT * FROM productos WHERE categoria_id = ?");
+        if (!$stmt) {
+            die("Error en la preparación de la consulta: " . $conexion->error);
+        }
+
+        $stmt->bind_param("i", $categoria_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $productos = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $productos[] = $row;
+        }
 
         $stmt->close();
         $conexion->close();

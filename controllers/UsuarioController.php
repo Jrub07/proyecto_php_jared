@@ -1,7 +1,9 @@
 <?php
 namespace App\Controllers;
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../bd_controladores_principal.php';
 
 use App\Database\Database;
@@ -100,10 +102,33 @@ class UsuarioController
             exit();
         }
 
+        $stmt = $conexion->prepare("SELECT id FROM usuarios WHERE nombre = ? AND id != ?");
+        $stmt->bind_param("si", $nombre, $user_id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $_SESSION['mensaje_error'] = "El nombre de usuario ya está en uso. Por favor, elige otro.";
+            header("Location: ../vistas/menu_tienda_usu.php");
+            exit();
+        }
+
+        $stmt->close();
+
         $stmt = $conexion->prepare("UPDATE usuarios SET nombre = ?, email = ?, password = ? WHERE id = ?");
+        if (!$stmt) {
+            $_SESSION['mensaje_error'] = "Error en la preparación de la consulta: " . $conexion->error;
+            header("Location: ../vistas/menu_tienda_usu.php");
+            exit();
+        }
+
         $stmt->bind_param("sssi", $nombre, $email, $password, $user_id);
 
         if ($stmt->execute()) {
+            $_SESSION['usuario'] = $nombre;
+            $_SESSION['nombre'] = $nombre;
+            $_SESSION['email'] = $email;
+            $_SESSION['password'] = $password;
             $_SESSION['mensaje_exito'] = "¡Datos actualizados correctamente!";
             header("Location: ../vistas/menu_tienda_usu.php");
             exit();
@@ -155,17 +180,18 @@ class UsuarioController
 
         $conexion = Database::connect();
 
-        $stmt = $conexion->prepare("SELECT password, rol FROM usuarios WHERE nombre = ?");
+        $stmt = $conexion->prepare("SELECT id, password, rol FROM usuarios WHERE nombre = ?");
         $stmt->bind_param("s", $nombre);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            $stmt->bind_result($stored_password, $rol);
+            $stmt->bind_result($user_id, $stored_password, $rol);
             $stmt->fetch();
 
             if ($contrasena === $stored_password) {
                 $_SESSION['usuario'] = $nombre;
+                $_SESSION['user_id'] = $user_id;
                 $_SESSION['rol'] = $rol;
                 setcookie('usuario', $nombre, time() + (86400 * 30), "/");
 
