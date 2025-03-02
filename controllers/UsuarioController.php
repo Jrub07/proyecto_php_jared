@@ -90,36 +90,27 @@ class UsuarioController
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];
         $password = $_POST['password'];
-        $usuario = $_SESSION['usuario'];
+        $user_id = $_SESSION['user_id'];
 
         $conexion = Database::connect();
 
-        $stmt = $conexion->prepare("SELECT id FROM usuarios WHERE nombre = ? AND nombre != ?");
-        $stmt->bind_param("ss", $nombre, $usuario);
-        $stmt->execute();
-        $stmt->store_result();
-
-        if ($stmt->num_rows > 0) {
-            $_SESSION['mensaje_error'] = "El nombre de usuario ya está en uso. Por favor, elige otro.";
-            $_SESSION['nombre'] = $nombre;
-            $_SESSION['email'] = $email;
-            $_SESSION['password'] = $password;
+        if ($conexion->connect_error) {
+            $_SESSION['mensaje_error'] = "Error de conexión: " . $conexion->connect_error;
             header("Location: ../vistas/menu_tienda_usu.php");
             exit();
         }
 
-        $stmt->close();
-
-        $stmt = $conexion->prepare("UPDATE usuarios SET nombre = ?, email = ?, password = ? WHERE nombre = ?");
-        $stmt->bind_param("ssss", $nombre, $email, $password, $usuario);
+        $stmt = $conexion->prepare("UPDATE usuarios SET nombre = ?, email = ?, password = ? WHERE id = ?");
+        $stmt->bind_param("sssi", $nombre, $email, $password, $user_id);
 
         if ($stmt->execute()) {
-            $_SESSION['usuario'] = $nombre; // Actualizar el nombre de usuario en la sesión
-            $_SESSION['mensaje_exito'] = "¡Datos modificados correctamente!";
+            $_SESSION['mensaje_exito'] = "¡Datos actualizados correctamente!";
             header("Location: ../vistas/menu_tienda_usu.php");
             exit();
         } else {
-            echo "Error al modificar los datos<br>";
+            $_SESSION['mensaje_error'] = "Error al actualizar los datos: " . $stmt->error;
+            header("Location: ../vistas/menu_tienda_usu.php");
+            exit();
         }
 
         $stmt->close();

@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require_once '../bd_controladores_principal.php';
 
@@ -39,20 +38,6 @@ class ProductoController {
         $stmt = $conexion->query("SELECT id, categoria_id, nombre, precio, stock, oferta, descripcion, imagen FROM productos");
         $productos = $stmt->fetch_all(MYSQLI_ASSOC);
 
-        // Obtener los valores mínimo y máximo de categoria_id
-        $sql = "SELECT MIN(categoria_id) as minCategoriaId, MAX(categoria_id) as maxCategoriaId FROM categorias";
-        $resultado = $conexion->query($sql);
-
-        if ($resultado && $resultado->num_rows > 0) {
-            $fila = $resultado->fetch_assoc();
-            $minCategoriaId = $fila['minCategoriaId'];
-            $maxCategoriaId = $fila['maxCategoriaId'];
-        } else {
-            // Valores por defecto en caso de que no haya categorías en la base de datos
-            $minCategoriaId = 1;
-            $maxCategoriaId = 100;
-        }
-
         $conexion->close();
 
         include '../vistas/ver_productos.php';
@@ -85,6 +70,20 @@ class ProductoController {
             header("Location: ../vistas/menu_tienda_admin.php");
             exit();
         }
+
+        // Verificar si la categoría existe
+        $stmt = $conexion->prepare("SELECT id FROM categorias WHERE id = ?");
+        $stmt->bind_param("i", $categoria_id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 0) {
+            $_SESSION['mensaje_error'] = "La categoría no existe.";
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
+        }
+
+        $stmt->close();
 
         if (!is_dir('../uploads')) {
             mkdir('../uploads', 0777, true);
@@ -139,6 +138,8 @@ class ProductoController {
     }
 
     private function actualizar_producto() {
+        session_start(); // Iniciar la sesión para almacenar mensajes de error
+
         $id = $_POST['id'];
         $categoria_id = $_POST['categoria_id'];
         $nombre = $_POST['nombre'];
@@ -152,8 +153,31 @@ class ProductoController {
         $conexion = Database::connect();
 
         if ($conexion->connect_error) {
-            die("Error de conexión: " . $conexion->connect_error);
+            $_SESSION['mensaje_error'] = "Error de conexión: " . $conexion->connect_error;
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
         }
+
+        // Verificar si la oferta no supera el stock
+        if ($oferta > $stock) {
+            $_SESSION['mensaje_error'] = "Tu stock es inferior a la oferta.";
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
+        }
+
+        // Verificar si la categoría existe
+        $stmt = $conexion->prepare("SELECT id FROM categorias WHERE id = ?");
+        $stmt->bind_param("i", $categoria_id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 0) {
+            $_SESSION['mensaje_error'] = "La categoría no existe.";
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
+        }
+
+        $stmt->close();
 
         if (!empty($imagen)) {
             $imagen_path = "../uploads/" . basename($imagen);
@@ -185,10 +209,14 @@ class ProductoController {
     }
 
     private function eliminar_producto($id) {
+        session_start(); 
+
         $conexion = Database::connect();
 
         if ($conexion->connect_error) {
-            die("Error de conexión: " . $conexion->connect_error);
+            $_SESSION['mensaje_error'] = "Error de conexión: " . $conexion->connect_error;
+            header("Location: ../vistas/menu_tienda_admin.php");
+            exit();
         }
 
         $stmt = $conexion->prepare("DELETE FROM productos WHERE id = ?");

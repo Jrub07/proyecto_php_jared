@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +11,9 @@
         <h1>Modificar Producto</h1>
     </header>
     <section>
+        <?php if (isset($_SESSION['mensaje_error'])): ?>
+            <p style="color: red;"><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
+        <?php endif; ?>
         <form action="../controllers/ProductoController.php" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Modificar Producto</legend>

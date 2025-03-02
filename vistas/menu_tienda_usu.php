@@ -34,6 +34,18 @@ $productos = $productoController->obtenerProductos();
             </div>
         </section>
         <aside>
+            <?php if (isset($_SESSION['mensaje_error'])): ?>
+                <div class="mensaje error">
+                    <p><?php echo $_SESSION['mensaje_error']; unset($_SESSION['mensaje_error']); ?></p>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['mensaje_exito'])): ?>
+                <div class="mensaje exito">
+                    <p><?php echo $_SESSION['mensaje_exito']; unset($_SESSION['mensaje_exito']); ?></p>
+                </div>
+            <?php endif; ?>
+
             <form action="../controllers/UsuarioController.php" method="post">
                 <fieldset>
                     <legend>Opciones de Usuario</legend>
